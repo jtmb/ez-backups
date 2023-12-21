@@ -25,9 +25,7 @@
     - [Docker Image](#docker-image)
     - [Running on Docker](#running-on-docker)
     - [Running on Docker Compose](#running-on-docker-compose)
-    - [Running on Docker Swarm](#running-on-docker-swarm)
 - [Environment Variables Explained](#environment-variables-explained)
-    - [Changing Login Credentials](#changing-login-credentials)
 - [Contributing](#contributing)
 - [License](#license)
 
