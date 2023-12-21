@@ -87,7 +87,7 @@ Run on Docker Compose (this is the recommended way) by running the command "dock
 ```yaml
 version: '3.8'
 services:
-    ip-checker:
+    ez-backups:
         image: jtmb92/ez-backups
         volumes:
          - /test:/test
@@ -118,7 +118,7 @@ Local backup method to be used
 ```yaml
     WEBHOOK_URL: 'https://discord.com/api/webhooks/<redacted>/<redacted>'
 ```     
-The URL of your Discord webhook. This is where notifications will be sent when IP changes are detected.
+The URL of your Discord webhook. This is where notifications will be sent.
 ```yaml
     source_dir: '/test/test1 /test/test2 /test/test3' #example of multiple list format entries
 ```      
