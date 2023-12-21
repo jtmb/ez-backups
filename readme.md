@@ -5,7 +5,7 @@
 </h1>
 
 <div align="center">
-  <b>EZ Backups</b> - Keep your selfhosted environment updated.
+  <b>EZ Backups</b> - Keep your selfhosted environment backed up.
   <br />
   <br />
   <a href="https://github.com/jtmb/ip_check/issues/new?assignees=&labels=bug&title=bug%3A+">Report a Bug</a>
