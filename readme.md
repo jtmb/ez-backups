@@ -38,56 +38,51 @@
 
 ### <h1>About</h1>
 
-An Alpine-based microservice within Docker, designed to seamlessly backup your desired files or directories across a variety of local and cloud platforms.
+An Alpine-based microservice within Docker, designed to make backups easy.
+
+This solution proves invaluable for those who self-host using allowing for easy automated backups to multiple locations. (including cloud, local or BOTH)
 
 ### Highlighted Features:
 
-- <b>Streamlined addition of monitored A records</b> in cases of accidental removal.
-- <b>Automatic identification of changes in the forward-facing IP</b> facilitating the prompt update of A records with the new IP address.
+- <b>Multiple backup locations! </b>Backup between cloud, local or both! 
+- <b>Sync backups</b> back up to 3 locations at the same time!
 - <b>User-friendly customization</b> achieved through a concise set of environment variables.
 - <b>Integration with Discord</b> for simple alert notifications.
 - <b>Fast</b> - API request total time on average is less than a second.
 - <b>Lightweight</b> - Alpine Container keeps the image size below 15 MB.
 - <b>Scalable</b> - Built with scale in mind, Docker Swarm compatible.
-- <b>NEW</b> - Now includes a fully featured admin dashboard with login session support.
 
 
-#### Example:
+<!-- #### Example:
 ![Alt text](src/img/image.png))
-![Example](src/img/example.png)
+![Example](src/img/example.png) -->
 
-#### Discord Alerting:
+<!-- #### Discord Alerting:
 
-![Discord](src/img/discord.png)
+![Discord](src/img/discord.png) -->
 
 ## Prerequisites
 
 - Docker installed on your system
-- A Discord webhook URL
-- A Cloudflare API Key
-- The ZONE ID for your Cloudflare instance
 
 ### <h2>Getting Started</h2>
 ### [Docker Image](https://hub.docker.com/r/jtmb92/ez-backups)
 ```docker
- docker pull jtmb92/cloudflare-ip-checker
+ docker pull jtmb92/ez-backups
 ```
 
-### [Docker Image with UI Dashboard](https://hub.docker.com/r/jtmb92/cloudflare_ip_checker)
-```docker
- docker pull jtmb92/cloudflare-ip-checker:UI
-```
 ### Running on docker
 A simple docker run command gets your instance running.
 ```shell
-docker run --name ip-checker-container \
-    -e EMAIL="your-email@example.com" \
-    -e API_KEY="your-cloudflare-api-key" \
-    -e ZONE_ID="your-cloudflare-zone-id" \
-    -e WEBHOOK_URL="your-discord-webhook-url" \
-    -e DNS_RECORDS="my.site.com/A site.com/A" \
-    -e REQUEST_TIME=120 \
-jtmb92/cloudflare-ip-checker
+docker run --name ez-backups \
+        -e scheduled_hour: '15'
+        -e scheduled_minute: '59'
+        -e WEBHOOK_URL: 'your-discord-webhook'
+        -e local_backup_method: rsync
+        -e source_dir: '/test/test1 /test/test2 /test/test3'
+        -e backup_destination: /test/test4
+        -e TZ: America/New_York
+jtmb92/ez-backups
 ```
 ### Running on docker-compose
 Run on Docker Compose (this is the recommended way) by running the command "docker compose up -d".
@@ -95,92 +90,18 @@ Run on Docker Compose (this is the recommended way) by running the command "dock
 version: '3.8'
 services:
     ip-checker:
-        image: jtmb92/cloudflare-ip-checker
+        image: jtmb92/ez-backups
         volumes:
-         - /path/to/logs:/data/logs 
+         - /test:/test
         environment:
-            EMAIL: 'your-email@example.com'
-            API_KEY: 'your-cloudflare-api-key'
-            ZONE_ID: 'your-cloudflare-zone-id'
-            WEBHOOK_URL: 'your-discord-webhook-url'
-            DNS_RECORDS: 'my.site.com/A site.com/A'
-            REQUEST_TIME: '2m'
-            DASHBOARD_USER: admin
-            DASHBOARD_PASSWORD: admin
+            scheduled_hour: '15'
+            scheduled_minute: '59'
+            WEBHOOK_URL: 'your-discord-webhook'
+            local_backup_method: rsync
+            source_dir: '/test/test1 /test/test2 /test/test3'
+            backup_destination: /test/test4
+            TZ: America/New_York
 ```
-<b>NEW</b> Run on Docker Compose with UI (this is the recommended way) by running the command "docker compose up -d".
-
-```yaml
-version: '3.8'
-services:
-    ip-checker:
-        image: jtmb92/cloudflare-ip-checker:UI
-        volumes:
-         - /path/to/logs:/data/logs
-        ports:
-        - '8081:8080'
-        environment:
-            EMAIL: 'your-email@example.com'
-            API_KEY: 'your-cloudflare-api-key'
-            ZONE_ID: 'your-cloudflare-zone-id'
-            WEBHOOK_URL: 'your-discord-webhook-url'
-            DNS_RECORDS: 'my.site.com/A site.com/A'
-            REQUEST_TIME: '2m'
-```
-
-### Running on docker-compose with custom dockerfile
-Similar to the above example, the key difference here is that we are running with the build: argument instead of the image: argument. The . essentially builds the Docker image from a local Dockerfile located in the root directory where the docker compose up -d command was run.
-```yaml
-version: '3.8'
-services:
-    ip-checker:
-        build: .
-        volumes:
-         - /path/to/logs:/data/logs 
-        environment:
-            EMAIL: 'your-email@example.com'
-            API_KEY: 'your-cloudflare-api-key'
-            ZONE_ID: 'your-cloudflare-zone-id'
-            WEBHOOK_URL: 'your-discord-webhook-url'
-            DNS_RECORDS: 'my.site.com/A site.com/A'
-            REQUEST_TIME: '120'
-```
-### Running on Docker Swarm
-**Meant for advanced users**
-Here's an example using the Loki driver to ingress logging over a custom Docker network while securely passing in ENV vars.
-```yaml
-version: "3.8"
-services:
-    cloudflare-ip-checker:
-        image: "jtmb92/cloudflare_ip_checker"
-        restart: always
-        networks:
-            - container-swarm-network
-        volumes:
-         - /path/to/logs:/data/logs 
-        environment:
-            API_KEY:  ${cf_key}
-            ZONE_ID: ${cf_zone_id}
-            WEBHOOK_URL: ${discord_webook}
-            DNS_RECORDS: 'my.site.com/A site.com/A'
-            REQUEST_TIME: "2m"
-            EMAIL: ${email}
-        deploy:
-            replicas: 1
-            placement:
-                max_replicas_per_node: 1
-        logging:
-            driver: loki
-            options:
-                loki-url: "http://localhost:3100/loki/api/v1/push"
-                loki-retries: "5"
-                loki-batch-size: "400"
-networks:
-    container-swarm-network:
-     external: true
-```
-
-jtmb92/cloudflare_ip_checker
 
 ## Environment Variables explained
 
@@ -228,4 +149,5 @@ Please try to create bug reports that are:
 
 This project is licensed under the **GNU GENERAL PUBLIC LICENSE v3**. Feel free to edit and distribute this template as you like.
 
-See [LICENSE](LICENSE) for more information.
+See [LICENSE](LICENSE) for more information. 
+
