@@ -38,7 +38,7 @@
 
 An Alpine-based microservice within Docker, designed to make backups easy.
 
-This solution proves invaluable for those who self-host using allowing for easy automated backups to multiple locations. (including cloud, local or BOTH)
+This solution proves invaluable for those who self-host - allowing for easy automated backups to multiple locations.
 
 ### Highlighted Features:
 
