@@ -13,12 +13,17 @@ local_backup() {
         source_basename=$(basename "$dir")
 
         # Create the destination path by appending the source_basename
+        mkdir $backup_destination/$current_date
         destination_local="$backup_destination/$current_date/$source_basename"
 
         # Perform rsync or zip based on the selected method
         if [ "$local_backup_method" = "rsync" ]; then
             rsync -avz "$dir" "$destination_local"
-        elif [ "$local_backup_method" = "zip" ]; then
+        fi
+        if [ "$local_backup_method" = "tar" ]; then
+            tar -cvzf $destination_local.tgz $dir
+        fi
+        if [ "$local_backup_method" = "zip" ]; then
             zip -r "$destination_local.zip" "$dir"
         fi
     done

@@ -9,7 +9,7 @@ RUN apk --no-cache add tzdata \
     && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone
 # Install necessary packages (curl and jq)
-RUN apk --no-cache add curl zip rsync bash
+RUN apk --no-cache add curl zip tar rsync bash
 
 # Copy the scripts to the container
 COPY main.sh /data/EZ_BACKUPS/main.sh
