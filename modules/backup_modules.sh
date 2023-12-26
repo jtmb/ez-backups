@@ -13,8 +13,8 @@ local_backup() {
         source_basename=$(basename "$dir")
 
         # Create the destination path by appending the source_basename
-        mkdir $backup_destination/$current_date
-        destination_local="$backup_destination/$current_date/$source_basename"
+        mkdir $backup_destination $backup_destination/$(date +"%Y-%m-%d")
+        destination_local="$backup_destination/$(date +"%Y-%m-%d")/$source_basename"
 
         # Perform rsync or zip based on the selected method
         if [ "$local_backup_method" = "rsync" ]; then
