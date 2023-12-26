@@ -1,6 +1,6 @@
 #!/bin/bash
 # VARS
-current_date=$(date +"%Y-%m-%d")
+
 repo_url='https://github.com/jtmb/EZ_backups'
 # source_dir=("/test/test1" "/test/test2" "/test/test3")
 # backup_destination=/test/test4
