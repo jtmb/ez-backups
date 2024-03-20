@@ -8,5 +8,3 @@
     docker buildx build . -t jtmb92/ez-backups --push --platform=linux/arm64,linux/amd64,linux/arm/v7
 # Build Multiplatform image Specific image with latest tag 
     docker buildx build . -t jtmb92/ez-backups:latest --push --platform=linux/arm64,linux/amd64,linux/arm/v7
-# Build Multiplatform image Specific image with UI tag
-    docker buildx build . -t jtmb92/ez-backups:UI --push --platform=linux/arm64,linux/amd64,linux/arm/v7
