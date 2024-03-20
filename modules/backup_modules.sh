@@ -46,8 +46,8 @@ remote_backup() {
         # Perform rsync or tar/zip based on the selected method
         case "$remote_backup_method" in
             rsync)
-                chomd 600 /.ssh/$private_key_name
-                rsync -avz -e "ssh -i /.ssh/$private_key_name" "$dir" "$remote_user@$remote_host:$backup_destination"
+                chmod 600 /.ssh/$private_key_name
+                rsync -avz -e "ssh -o StrictHostKeyChecking=no -i /.ssh/$private_key_name" "$dir" "$remote_user@$remote_host:$backup_destination"
                 ;;
             *)
                 echo "Unknown local backup method: $remote_backup_method"
