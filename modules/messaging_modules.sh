@@ -27,7 +27,7 @@ discord_message() {
                 },
                 {
                     "name": "Backup Method",
-                    "value": "'$local_backup_method'"
+                    "value": "'$local_backup_method''$remote_backup_method'"
                 },
                 {
                     "name": "Time (America/Toronto)",
