@@ -1,14 +1,40 @@
 #!/bin/bash
 
 # Function to perform local backup
+# remote_backup() {
+#     echo "Performing remote backup..."
+
+#     # Check if local_backup_method is defined
+#     if [ -z "$remote_backup_method" ]; then
+#         echo "Remote backup method is not defined. Skipping backup."
+#         return
+#     fi
+#     # Convert the source_dir string to an array
+#     source_dirs=($source_dir)
+
+#     # Iterate over source directories and perform rsync or zip for each
+#     for dir in "${source_dirs[@]}"; do
+#         # Get the basename of the source directory
+#         source_basename=$(basename "$dir")
+
+#         # Perform rsync or zip based on the selected method
+#         if [ "$remote_backup_method" = "rsync" ]; then
+#             rsync -avz -e "ssh -i /.ssh/$private_key_name" "$dir" "$remote_user@$remote_host:$backup_destination"
+#         fi
+#     done
+# }
+
+
+# Function to perform local backup
 remote_backup() {
-    echo "Performing remote backup..."
+    echo "Performing local backup..."
 
     # Check if local_backup_method is defined
     if [ -z "$remote_backup_method" ]; then
         echo "Remote backup method is not defined. Skipping backup."
         return
     fi
+
     # Convert the source_dir string to an array
     source_dirs=($source_dir)
 
@@ -17,10 +43,16 @@ remote_backup() {
         # Get the basename of the source directory
         source_basename=$(basename "$dir")
 
-        # Perform rsync or zip based on the selected method
-        if [ "$remote_backup_method" = "rsync/" ]; then
-            rsync -avz -e "ssh -i ~/.ssh/$private_key_name" "$dir" "$remote_user@$remote_host:$backup_destination"
-        fi
+        # Perform rsync or tar/zip based on the selected method
+        case "$remote_backup_method" in
+            rsync)
+                chomd 600 /.ssh/$private_key_name
+                rsync -avz -e "ssh -i /.ssh/$private_key_name" "$dir" "$remote_user@$remote_host:$backup_destination"
+                ;;
+            *)
+                echo "Unknown local backup method: $remote_backup_method"
+                ;;
+        esac
     done
 }
 

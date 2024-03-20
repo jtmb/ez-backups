@@ -56,7 +56,7 @@ while true; do
             backup_checked=0
             # Send Discord message
             discord_message
-            echo -e "${YELLOW}$backup_destination${RESET} ${WHITE}synced${RESET} to: ${GREEN}$source_dir_string ✅${RESET}"
+            echo -e "${WHITE}$source_dir_string${RESET} ${YELLOW}$backup_destination${RESET} ${GREEN}synced${RESET}"
             echo "Sleeping for one hour..."
             sleep 3600  # Sleep for one hour (3600 seconds)
         else

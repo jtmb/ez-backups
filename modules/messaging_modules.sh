@@ -9,7 +9,6 @@ discord_message() {
         done
     # Remove leading space
     source_dir_string=${source_dir_string:1}
-    echo "Source Directory String: $source_dir_string"
 
     EMBED_MESSAGE='{
         "embeds": [{

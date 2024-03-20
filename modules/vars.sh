@@ -2,8 +2,8 @@
 # VARS
 
 repo_url='https://github.com/jtmb/EZ_backups'
-source_dir=("/test/test1" "/test/test2" "/test/test3")
-backup_destination=test/
+# # source_dir=("/test/test1" "/test/test2" "/test/test3")
+# backup_destination=test/
 # local_backup_method=rsync_remote
 # remote_backup_method=rsync
 # scheduled_hour="20"
