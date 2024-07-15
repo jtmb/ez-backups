@@ -95,10 +95,50 @@ services:
             scheduled_hour: '15'
             scheduled_minute: '59'
             WEBHOOK_URL: 'your-discord-webhook'
-            local_backup_method: rsync
+            local_backup_method: tar
             source_dir: '/test/test1 /test/test2 /test/test3'
             backup_destination: /test/test4
             TZ: America/New_York
+```
+
+
+### Running on docker-compose with rsyncnet remote destination and backing up to TAR local destination:
+Run on Docker Compose (this is the recommended way) by running the command "docker compose up -d".
+```yaml
+version: '3'
+
+services:
+  ez-backups:
+    image: jtmb92/ez-backups:latest
+    environment:
+      scheduled_hour: '00'
+      scheduled_minute: '12'
+      WEBHOOK_URL: "${discord_webhook}"
+      local_backup_method: tar
+      remote_backup_method: rsync
+      remote_host: ${rsync_net_user}.rsync.net
+      remote_user: ${rsync_net_user}
+      private_key_name: id_rsa_rsyncNet
+      source_dir: '${container_volumes_location}'
+      backup_destination: /test/test4
+      TZ: America/New_York
+    volumes:
+      - ${container_volumes_location}:${container_volumes_location}
+      - ${container_volumes_location}/ez-backups/.ssh:/.ssh
+      - /test/test4:/test/test4
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3003/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+networks:
+  container-swarm-network:
+    external: true
 ```
 
 ## Environment Variables explained
