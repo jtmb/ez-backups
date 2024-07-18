@@ -8,17 +8,20 @@ WORKDIR /data/EZ_BACKUPS
 RUN apk --no-cache add tzdata \
     && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone
-# Install necessary packages (curl and jq)
+# Install necessary packages
 RUN apk --no-cache add curl zip tar rsync bash openssh
 
 # Copy the scripts to the container
-COPY main.sh /data/EZ_BACKUPS/main.sh
-# COPY modules/entrypoint.sh /data/EZ_BACKUPS/entrypoint.sh
+COPY main.sh /data/EZ_BACKUPS/main.sh 
+COPY adhoc_backup.sh /data/EZ_BACKUPS/adhoc_backup.sh
 COPY modules/* /data/EZ_BACKUPS/modules/
+COPY modules/alias.sh /usr/local/bin/ezbackup
+
+RUN chmod +x /usr/local/bin/ezbackup
+RUN chmod +x /data/EZ_BACKUPS/adhoc_backup.sh
 
 # Make the script executable
 RUN chmod +x /data/EZ_BACKUPS/modules/entrypoint.sh /data/EZ_BACKUPS/main.sh
-# RUN dos2unix /data/EZ_BACKUPS/modules/entrypoint.sh
 
 # Create log file dir
 RUN mkdir /data/logs

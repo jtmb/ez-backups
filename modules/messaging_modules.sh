@@ -1,5 +1,5 @@
 #!/bin/bash
-source modules/vars.sh
+source /data/EZ_BACKUPS/modules/vars.sh
 # Construct the Discord embed message
 discord_message() {
     source_dir_string=""

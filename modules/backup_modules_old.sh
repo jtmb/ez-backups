@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Function to perform remote backup
+# Function to perform local backup
 remote_backup() {
-    echo "Performing remote backup..."
+    echo "Performing local backup..."
 
-    # Check if remote_backup_method is defined
+    # Check if local_backup_method is defined
     if [ -z "$remote_backup_method" ]; then
         echo "Remote backup method is not defined. Skipping backup."
         return
@@ -18,18 +18,19 @@ remote_backup() {
         # Get the basename of the source directory
         source_basename=$(basename "$dir")
 
-        # Perform rsync based on the selected method
+        # Perform rsync or tar/zip based on the selected method
         case "$remote_backup_method" in
-            rsyncnet)
+            rsync)
                 chmod 600 /.ssh/$private_key_name
                 rsync -avz -e "ssh -o StrictHostKeyChecking=no -i /.ssh/$private_key_name" "$dir" "$remote_user@$remote_host:$backup_destination"
                 ;;
             *)
-                echo "Unknown remote backup method: $remote_backup_method"
+                echo "Unknown local backup method: $remote_backup_method"
                 ;;
         esac
     done
 }
+
 
 # Function to perform local backup
 local_backup() {

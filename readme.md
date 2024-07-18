@@ -89,6 +89,7 @@ version: '3.8'
 services:
     ez-backups:
         image: jtmb92/ez-backups
+        container_name: ez-backups
         volumes:
          - /test:/test
         environment:
@@ -101,6 +102,57 @@ services:
             TZ: America/New_York
 ```
 
+### Running on docker-compose with remote destination and backing up to TAR local destination
+Backing up to remote locations now supported! 
+Example of a remote backup to rsyncnet, using ssh keys:
+```yaml
+version: '3'
+
+services:
+  ez-backups:
+    image: jtmb92/ez-backups:latest
+    environment:
+      scheduled_hour: '00'
+      scheduled_minute: '12'
+      WEBHOOK_URL: "${discord_webhook}"
+      local_backup_method: tar
+      remote_backup_method: rsync
+      remote_host: ${rsync_net_user}.rsync.net
+      remote_user: ${rsync_net_user}
+      private_key_name: id_rsa_rsyncNet
+      source_dir: '${container_volumes_location}'
+      backup_destination: /test/test4
+      TZ: America/New_York
+    volumes:
+      - ${container_volumes_location}:${container_volumes_location}
+      - ${container_volumes_location}/ez-backups/.ssh:/.ssh
+      - /test/test4:/test/test4
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3003/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+networks:
+  container-swarm-network:
+    external: true
+```
+
+### Performing an adhoc (one time) backup
+Sometimes you may need to run a backup just once. You can do so by specifying the backup method with the "ezbackup" command:
+```sh
+docker exec -it CONTAINER_NAME ezbackup local_backup_method=tar
+
+```
+and for remote:
+```sh
+docker exec -it CONTAINER_NAME ezbackup remote_backup_method=rsyncnet
+
+```
 ## Environment Variables explained
 
 ```yaml
