@@ -96,7 +96,7 @@ services:
             scheduled_hour: '15'
             scheduled_minute: '59'
             WEBHOOK_URL: 'your-discord-webhook'
-            local_backup_method: rsync
+            local_backup_method: tar
             source_dir: '/test/test1 /test/test2 /test/test3'
             backup_destination: /test/test4
             TZ: America/New_York
