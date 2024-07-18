@@ -25,6 +25,9 @@
     - [Docker Image](#docker-image)
     - [Running on Docker](#running-on-docker)
     - [Running on Docker Compose](#running-on-docker-compose)
+    - [Backing up to remote locations](#backing-up-to-remote-locations)
+    - [Performing an adhoc (one time) backup](#performing-an-adhoc-one-time-backup)
+    ### 
 - [Environment Variables Explained](#environment-variables-explained)
 - [Contributing](#contributing)
 - [License](#license)
@@ -102,7 +105,7 @@ services:
             TZ: America/New_York
 ```
 
-### Running on docker-compose with remote destination and backing up to TAR local destination
+### Backing up to remote locations
 Backing up to remote locations now supported! 
 Example of a remote backup to rsyncnet, using ssh keys:
 ```yaml
