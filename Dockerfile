@@ -15,9 +15,9 @@ RUN apk --no-cache add curl zip tar rsync bash openssh
 COPY main.sh /data/EZ_BACKUPS/main.sh 
 COPY adhoc_backup.sh /data/EZ_BACKUPS/adhoc_backup.sh
 COPY modules/* /data/EZ_BACKUPS/modules/
-COPY modules/alias.sh /usr/local/bin/ezbackup
+COPY modules/alias.sh /usr/local/bin/ezbackups
 
-RUN chmod +x /usr/local/bin/ezbackup
+RUN chmod +x /usr/local/bin/ezbackups
 RUN chmod +x /data/EZ_BACKUPS/adhoc_backup.sh
 
 # Make the script executable

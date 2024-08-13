@@ -146,14 +146,14 @@ networks:
 ```
 
 ### Performing an adhoc (one time) backup
-Sometimes you may need to run a backup just once. You can do so by specifying the backup method with the "ezbackup" command:
+Sometimes you may need to run a backup just once. You can do so by specifying the backup method with the "ezbackups" command:
 ```sh
-docker exec -it CONTAINER_NAME ezbackup local_backup_method=tar
+docker exec -it CONTAINER_NAME ezbackups local_backup_method=tar
 
 ```
 and for remote:
 ```sh
-docker exec -it CONTAINER_NAME ezbackup remote_backup_method=rsyncnet
+docker exec -it CONTAINER_NAME ezbackups remote_backup_method=rsyncnet
 
 ```
 ## Environment Variables explained
