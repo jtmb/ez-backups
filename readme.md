@@ -153,7 +153,7 @@ docker exec -it CONTAINER_NAME ezbackups local_backup_method=tar
 ```
 and for remote:
 ```sh
-docker exec -it CONTAINER_NAME ezbackups remote_backup_method=rsyncnet
+docker exec -it CONTAINER_NAME ezbackup remote_backup_method=rsyncnet
 
 ```
 ## Environment Variables explained
